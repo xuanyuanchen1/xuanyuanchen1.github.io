@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凑十法口诀 · 交互式学习</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#9ccfa0;font-family:'Microsoft YaHei','PingFang SC',system-ui,sans-serif;overflow:hidden}
+  #canvas{position:fixed;top:50%;left:50%;width:1280px;height:720px;background:#c7edcc;transform:translate(-50%,-50%) scale(1);transform-origin:center center;box-shadow:0 10px 60px rgba(20,60,40,.25);overflow:hidden}
+  .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s;display:flex;flex-direction:column}
+  .slide.active{opacity:1;visibility:visible}
+  .chrome-top,.chrome-bottom{position:absolute;left:0;right:0;height:36px;padding:0 60px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#1b4332;font-weight:bold;z-index:10}
+  .chrome-top{top:6px}
+  .chrome-bottom{bottom:6px}
+  .nav-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:20}
+  .nav-dot{width:8px;height:8px;border-radius:50%;background:rgba(27,67,50,.22);cursor:pointer;transition:all .3s}
+  .nav-dot.active{background:#2d6a4f;transform:scale(1.35)}
+  .deco-emoji{position:absolute;font-size:36px;z-index:1;animation:floaty 3s ease-in-out infinite;user-select:none;pointer-events:none}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+  @keyframes popIn{0%{opacity:0;transform:translateY(15px) scale(.85)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  .s-cover{padding:44px 60px 30px;align-items:center}
+  .cover-title{font-size:48px;font-weight:900;color:#1b4332;text-shadow:3px 3px 0 #fff;letter-spacing:4px}
+  .cover-board{margin-top:10px;background:#2d6a4f;color:#d8f3dc;font-size:14px;padding:10px 24px;border-radius:12px;text-align:center;line-height:1.6;font-weight:bold;box-shadow:0 4px 0 #1b4332}
+  .cover-board .key{color:#ffe066}
+  .cover-cols{margin-top:14px;display:flex;gap:10px;align-items:flex-end;justify-content:center;flex:1}
+  .cover-col{display:flex;flex-direction:column;gap:7px}
+  .cover-card{width:92px;border-radius:10px;padding:6px 4px 5px;text-align:center;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+  .cover-card .eq{font-size:17px;font-weight:900;color:#1b4332;line-height:1.1}
+  .cover-card .eq .ans{color:#e76f51}
+  .cover-card .split{display:flex;align-items:center;justify-content:center;gap:2px;margin-top:4px;font-size:13px;font-weight:bold;color:#555}
+  .cover-card .split .s1,.cover-card .split .s2{color:#c2410c}
+  .cover-card .split .sten{color:#e76f51;font-size:14px}
+  .cover-card .split .line{width:1px;height:14px;background:#999;margin:0 2px}
+  .cc-blue{background:#d6e8fa;border:2px solid #4a90d9;box-shadow:0 3px 0 #4a90d9}
+  .cc-yellow{background:#fdf6c9;border:2px solid #e8c547;box-shadow:0 3px 0 #e8c547}
+  .cc-pink{background:#f9d6d6;border:2px solid #e07a7a;box-shadow:0 3px 0 #e07a7a}
+  .cc-green{background:#d4efdf;border:2px solid #52b788;box-shadow:0 3px 0 #52b788}
+  .s-practice{padding:48px 60px 30px}
+  .p-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0}
+  .p-title{font-size:22px;font-weight:900;color:#1b4332}
+  .p-title .pn{color:#e76f51}
+  .p-right{display:flex;align-items:center;gap:10px}
+  .p-tip{font-size:12px;color:#2d6a4f;background:#fff;padding:5px 12px;border-radius:999px;font-weight:bold}
+  .flip-all{font-size:13px;font-weight:bold;color:#1b4332;background:#ffe066;border:2px solid #1b4332;border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit;transition:transform .2s}
+  .flip-all:hover{background:#ffd93d;transform:scale(1.08)}
+  .p-grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:14px;min-height:0}
+  .card{position:relative;perspective:1000px;cursor:pointer;width:100%;height:100%;transition:transform .3s,filter .3s;z-index:2}
+  .card:hover{transform:scale(1.04);filter:drop-shadow(0 8px 14px rgba(27,67,50,.3));z-index:6}
+  .card-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.35,.15,.2,1);animation:popIn .5s cubic-bezier(.2,.7,.2,1.2) backwards}
+  .card.flipped .card-inner{transform:rotateY(180deg)}
+  .card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:10px 8px}
+  .card-front{background:#f6fdf4;border:3px solid #95d5b2;box-shadow:0 4px 0 #74c69d}
+  .card-back{background:#2d6a4f;border:3px solid #1b4332;box-shadow:0 4px 0 #1b4332;transform:rotateY(180deg)}
+  .eq-top{display:flex;align-items:center;gap:4px;font-size:26px;font-weight:900;color:#1b4332;line-height:1}
+  .card-back .eq-top{color:#ffe066}
+  .op{font-size:22px;color:#52b788}
+  .card-back .op{color:#b7e4c7}
+  .divider{width:80%;height:2px;background:#95d5b2;margin:6px 0;border-radius:2px}
+  .card-back .divider{background:#52b788}
+  .steps{display:flex;flex-direction:column;gap:5px;align-items:center}
+  .step{display:flex;align-items:center;gap:3px;font-size:20px;font-weight:bold;color:#1b4332;line-height:1.2}
+  .card-back .step{color:#fff}
+  .s-num{font-size:20px;font-weight:900}
+  .card-back .s-num{color:#fff}
+  .arrow{font-size:18px;color:#e76f51}
+  .card-back .arrow{color:#ffd93d}
+  .hl{background:#ffe066;padding:0 4px;border-radius:4px;color:#c2410c}
+  .card-back .hl{background:#ffd93d;color:#9c5708}
+  .ans-show{color:#e76f51;font-size:28px}
+  .card-back .ans-show{color:#ffd93d;font-size:26px}
+  .flip-hint{margin-top:5px;font-size:11px;color:#74c69d;font-weight:bold}
+  .back-hint{margin-top:5px;font-size:11px;color:#b7e4c7;font-weight:bold}
+  .blank{width:30px;height:30px;border:2px solid #52b788;border-radius:6px;text-align:center;font-size:20px;font-weight:900;font-family:inherit;color:#1b4332;background:#fff;outline:none;transition:all .2s}
+  .blank:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px rgba(45,106,79,.15)}
+  .blank.correct{background:#b7e4c7;border-color:#2d6a4f;color:#1b4332}
+  .blank.wrong{background:#ffcdd2;border-color:#e53935;animation:shake .4s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+  .card-front.completed{border-color:#f0a500;box-shadow:0 4px 0 #d99000,0 0 16px rgba(240,165,0,.3)}
+  .card-front.completed .flip-hint{color:#e76f51}
+  .s-close{align-items:center;justify-content:center;padding:50px 60px}
+  .close-inner{text-align:center}
+  .close-emoji{font-size:80px}
+  .close-title{font-size:52px;font-weight:900;color:#1b4332;text-shadow:2px 2px 0 #fff;margin-top:8px}
+  .close-sub{font-size:22px;color:#2d6a4f;margin-top:10px;font-weight:bold}
+  .close-stats{display:flex;gap:30px;margin-top:24px;justify-content:center}
+  .stat-item{background:#fff;border:3px solid #95d5b2;border-radius:18px;padding:12px 24px;box-shadow:0 4px 0 #74c69d}
+  .stat-num{font-size:36px;font-weight:900;color:#2d6a4f}
+  .stat-label{font-size:13px;color:#1b4332;font-weight:bold}
+  .close-bottom{font-size:13px;color:#1b4332;padding-top:16px;border-top:2px solid #1b4332;width:100%;text-align:center;font-weight:bold;margin-top:20px}
+</style>
+</head>
+<body>
+<div id="canvas">
+  <div class="chrome-top"><span>🌿 凑十法口诀 · 交互式学习</span><span>小学数学 · 20以内进位加法</span></div>
+  <div class="chrome-bottom"><span>✏️ 正面填空 → 翻面看答案 · 绿色=正确 红色=错误</span><span id="pageInfo">1 / 4</span></div>
+  <div class="nav-dots" id="navDots"></div>
+  <section class="slide s-cover active">
+    <div class="deco-emoji" style="top:20px;left:30px">🐱</div>
+    <div class="deco-emoji" style="top:20px;right:30px">🐰</div>
+    <div class="cover-title">凑十法口诀表</div>
+    <div class="cover-board">
+      看大数，分小数，凑成十，加剩数<br>
+      <span class="key">一凑九，二凑八，三凑七来四凑六，五五想凑就满十</span>
+    </div>
+    <div class="cover-cols" id="coverCols"></div>
+  </section>
+  <section class="slide s-close" id="closingSlide">
+    <div class="deco-emoji" style="top:40px;left:50px">🎈</div>
+    <div class="deco-emoji" style="top:50px;right:50px;animation-delay:.5s">🌈</div>
+    <div class="close-inner">
+      <div class="close-emoji">🎉</div>
+      <div class="close-title">太棒了！</div>
+      <div class="close-sub">你已经完成了全部凑十法练习！</div>
+      <div class="close-stats">
+        <div class="stat-item"><div class="stat-num">20</div><div class="stat-label">道题</div></div>
+        <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">组练习</div></div>
+      </div>
+    </div>
+    <div class="close-bottom">🌿 凑十法口诀 · 交互式学习</div>
+  </section>
+</div>
+<script>
+const COLORS = ['cc-blue','cc-yellow','cc-pink','cc-green','cc-pink','cc-blue','cc-yellow','cc-green'];
+const bySum = {};
+for(let sum=11;sum<=18;sum++) bySum[sum] = [];
+for(let a=2;a<=9;a++){const b=9, sum=a+b; const p1=1, p2=a-1; bySum[sum].push({a,b,sum,p1,p2});}
+for(let a=3;a<=8;a++){const b=8, sum=a+b; const p1=2, p2=a-2; bySum[sum].push({a,b,sum,p1,p2});}
+for(let a=4;a<=7;a++){const b=7, sum=a+b; const p1=3, p2=a-3; bySum[sum].push({a,b,sum,p1,p2});}
+for(let a=5;a<=6;a++){const b=6, sum=a+b; const p1=4, p2=a-4; bySum[sum].push({a,b,sum,p1,p2});}
+let coverHtml = '';
+const sums = [11,12,13,14,15,16,17,18];
+sums.forEach((sum, ci) => {
+  const cards = bySum[sum];
+  let colHtml = '<div class="cover-col">';
+  cards.forEach(d => {
+    colHtml += '<div class="cover-card '+COLORS[ci]+'">'+
+      '<div class="eq">'+d.a+'+'+d.b+'=<span class="ans">'+d.sum+'</span></div>'+
+      '<div class="split"><span class="s1">'+d.p1+'</span><span class="line"></span><span class="sten">10</span><span class="line"></span><span class="s2">'+d.p2+'</span></div>'+
+    '</div>';
+  });
+  colHtml += '</div>';
+  coverHtml += colHtml;
+});
+document.getElementById('coverCols').innerHTML = coverHtml;
+const DATA = [];
+for(let a=2;a<=9;a++) DATA.push({a,b:9,sum:a+9,p1:1,p2:a-1});
+for(let a=3;a<=8;a++) DATA.push({a,b:8,sum:a+8,p1:2,p2:a-2});
+for(let a=4;a<=7;a++) DATA.push({a,b:7,sum:a+7,p1:3,p2:a-3});
+for(let a=5;a<=6;a++) DATA.push({a,b:6,sum:a+6,p1:4,p2:a-4});
+function cardHTML(d, idx, delay){
+  const front=
+    '<div class="card-front">'+
+      '<div class="eq-top"><span>'+d.a+'</span><span class="op">+</span><span>'+d.b+'</span><span class="op">=</span>'+
+        '<input type="text" class="blank" maxlength="2" data-ans="'+d.sum+'" oninput="checkInput(this)">'+
+      '</div>'+
+      '<div class="divider"></div>'+
+      '<div class="steps">'+
+        '<div class="step"><span class="s-num">'+d.a+'</span><span class="arrow">→</span>'+
+          '<input type="text" class="blank" maxlength="1" data-ans="'+d.p1+'" oninput="checkInput(this)">'+
+          '<span class="op">+</span>'+
+          '<input type="text" class="blank" maxlength="1" data-ans="'+d.p2+'" oninput="checkInput(this)">'+
+        '</div>'+
+        '<div class="step">'+
+          '<input type="text" class="blank" maxlength="1" data-ans="'+d.p1+'" oninput="checkInput(this)">'+
+          '<span class="op">+</span><span class="s-num">'+d.b+'</span><span class="op">=</span><span class="s-num">10</span>'+
+        '</div>'+
+        '<div class="step"><span class="s-num">10</span><span class="op">+</span>'+
+          '<input type="text" class="blank" maxlength="1" data-ans="'+d.p2+'" oninput="checkInput(this)">'+
+          '<span class="op">=</span>'+
+          '<input type="text" class="blank" maxlength="2" data-ans="'+d.sum+'" oninput="checkInput(this)">'+
+        '</div>'+
+      '</div>'+
+      '<div class="flip-hint">🔄 翻面看答案</div>'+
+    '</div>';
+  const back=
+    '<div class="card-back">'+
+      '<div class="eq-top"><span>'+d.a+'</span><span class="op">+</span><span>'+d.b+'</span><span class="op">=</span><span class="ans-show">'+d.sum+'</span></div>'+
+      '<div class="divider"></div>'+
+      '<div class="steps">'+
+        '<div class="step"><span class="s-num">'+d.a+'</span><span class="arrow">→</span><span class="hl">'+d.p1+'</span><span class="op">+</span><span class="hl">'+d.p2+'</span></div>'+
+        '<div class="step"><span class="hl">'+d.p1+'</span><span class="op">+</span><span class="s-num">'+d.b+'</span><span class="op">=</span><span class="s-num">10</span></div>'+
+        '<div class="step"><span class="s-num">10</span><span class="op">+</span><span class="hl">'+d.p2+'</span><span class="op">=</span><span class="ans-show">'+d.sum+'</span></div>'+
+      '</div>'+
+      '<div class="back-hint">✅ 完整答案</div>'+
+    '</div>';
+  return '<div class="card" data-idx="'+idx+'"><div class="card-inner" style="animation-delay:'+delay+'">'+front+back+'</div></div>';
+}
+function checkInput(input){
+  const expected=input.dataset.ans;
+  const val=input.value.trim();
+  if(val===''){input.classList.remove('correct','wrong');return;}
+  if(val===expected){input.classList.add('correct');input.classList.remove('wrong');}
+  else{input.classList.add('wrong');input.classList.remove('correct');
+    setTimeout(()=>{if(input.classList.contains('wrong')){input.classList.remove('wrong');input.value='';}},800);}
+  const card=input.closest('.card');
+  if(!card)return;
+  const front=card.querySelector('.card-front');
+  const inputs=front.querySelectorAll('input.blank');
+  const allOk=Array.from(inputs).every(i=>i.classList.contains('correct'));
+  front.classList.toggle('completed',allOk);
+}
+const closing=document.getElementById('closingSlide');
+const PER=8;
+const PAGES=Math.ceil(DATA.length/PER);
+const TIPS=['📝 先想答案再翻面','💡 看大数分小数','🎯 凑成十加剩数','🌟 你真棒！'];
+const DECO=['🐱','🐰','🐻','🐸'];
+for(let p=0;p<PAGES;p++){
+  const slice=DATA.slice(p*PER,p*PER+PER);
+  let cards='';
+  slice.forEach((d,i)=>{cards+=cardHTML(d,p*PER+i,(i*0.05).toFixed(2)+'s');});
+  const sec=document.createElement('section');
+  sec.className='slide s-practice';
+  sec.innerHTML=
+    '<div class="deco-emoji" style="left:10px;top:180px">'+DECO[p%DECO.length]+'</div>'+
+    '<div class="deco-emoji" style="right:10px;bottom:150px;animation-delay:.8s">'+DECO[(p+2)%DECO.length]+'</div>'+
+    '<div class="p-header">'+
+      '<div class="p-title">凑十法练习 <span class="pn">第'+(p+1)+'组</span></div>'+
+      '<div class="p-right">'+
+        '<div class="p-tip">'+TIPS[p%TIPS.length]+'</div>'+
+        '<button class="flip-all" onclick="toggleAll(this)">🔄 全部翻面</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="p-grid">'+cards+'</div>';
+  closing.parentNode.insertBefore(sec,closing);
+}
+function toggleAll(btn){
+  const slide=btn.closest('.slide');
+  const cards=slide.querySelectorAll('.card');
+  const anyUnflipped=Array.from(cards).some(c=>!c.classList.contains('flipped'));
+  cards.forEach(c=>c.classList.toggle('flipped',anyUnflipped));
+  btn.textContent=anyUnflipped?'↩️ 全部翻回':'🔄 全部翻面';
+}
+const canvas=document.getElementById('canvas');
+canvas.addEventListener('click',function(e){
+  if(e.target.tagName==='INPUT')return;
+  const card=e.target.closest('.card');
+  if(card)card.classList.toggle('flipped');
+});
+const slides=document.querySelectorAll('.slide');
+const navDotsContainer=document.getElementById('navDots');
+const pageInfo=document.getElementById('pageInfo');
+let current=0;
+const total=slides.length;
+for(let i=0;i<total;i++){
+  const dot=document.createElement('div');
+  dot.className='nav-dot'+(i===0?' active':'');
+  dot.addEventListener('click',()=>goTo(i));
+  navDotsContainer.appendChild(dot);
+}
+const dots=document.querySelectorAll('.nav-dot');
+function goTo(idx){
+  if(idx<0||idx>=total||idx===current)return;
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current=idx;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  pageInfo.textContent=(current+1)+' / '+total;
+}
+function next(){goTo(current+1);}
+function prev(){goTo(current-1);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter'){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'){e.preventDefault();prev();}
+  else if(e.key==='Home'){e.preventDefault();goTo(0);}
+  else if(e.key==='End'){e.preventDefault();goTo(total-1);}
+});
+let wheelLock=false;
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  if(wheelLock)return;
+  wheelLock=true;
+  setTimeout(()=>wheelLock=false,500);
+  if(e.deltaY>0)next();else prev();
+},{passive:false});
+let touchStartX=0;
+canvas.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
+canvas.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-touchStartX;
+  if(Math.abs(dx)>50){if(dx<0)next();else prev();}
+},{passive:true});
+function scale(){
+  const s=Math.min(window.innerWidth/1280,window.innerHeight/720)*0.95;
+  canvas.style.transform='translate(-50%,-50%) scale('+s+')';
+}
+window.addEventListener('resize',scale);
+scale();
+</script>
+</body>
+</html>
