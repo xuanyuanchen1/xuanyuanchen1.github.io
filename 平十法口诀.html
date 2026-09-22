@@ -288,7 +288,7 @@ const nextBtn=document.getElementById('nextBtn');
 const pageNum=document.getElementById('pageNum');
 
 function goTo(idx){
-  if(idx<0||idx>=total||idx===current)return;
+  if(idx<0||idx>=total)return;
   slides[current].classList.remove('active');
   current=idx;
   slides[current].classList.add('active');
