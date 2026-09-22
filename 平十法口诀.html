@@ -13,71 +13,89 @@
   .chrome-top,.chrome-bottom{position:absolute;left:0;right:0;height:36px;padding:0 60px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#1b4332;font-weight:bold;z-index:10}
   .chrome-top{top:6px}
   .chrome-bottom{bottom:6px}
-  .nav-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:20;max-width:70%;flex-wrap:wrap;justify-content:center}
-  .nav-dot{width:8px;height:8px;border-radius:50%;background:rgba(27,67,50,.22);cursor:pointer;transition:all .3s}
-  .nav-dot.active{background:#2d6a4f;transform:scale(1.35)}
   .deco-emoji{position:absolute;font-size:36px;z-index:1;animation:floaty 3s ease-in-out infinite;user-select:none;pointer-events:none}
   @keyframes floaty{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
   @keyframes popIn{0%{opacity:0;transform:translateY(15px) scale(.85)}100%{opacity:1;transform:translateY(0) scale(1)}}
-  .s-cover{padding:38px 40px 24px;align-items:center}
-  .cover-title{font-size:44px;font-weight:900;color:#1b4332;text-shadow:3px 3px 0 #fff;letter-spacing:4px}
-  .cover-board{margin-top:8px;background:#2d6a4f;color:#d8f3dc;font-size:14px;padding:10px 24px;border-radius:10px;text-align:center;line-height:1.5;font-weight:bold;box-shadow:0 3px 0 #1b4332}
-  .cover-ribbon{margin-top:6px;font-size:18px;font-weight:900;color:#e76f51}
-  .cover-cols{margin-top:8px;display:flex;gap:5px;align-items:flex-end;justify-content:center;flex:1}
-  .cover-col{display:flex;flex-direction:column;gap:5px}
-  .cover-card{width:58px;border-radius:8px;padding:4px 2px 3px;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.15)}
-  .cover-card .eq{font-size:12px;font-weight:900;color:#1b4332;line-height:1.1}
+
+  /* 封面 */
+  .s-cover{padding:16px 44px 16px;align-items:center}
+  .cover-title{font-size:38px;font-weight:900;color:#1b4332;text-shadow:3px 3px 0 #fff;letter-spacing:4px;flex-shrink:0}
+  .cover-ribbon{margin-top:4px;font-size:17px;font-weight:900;color:#e76f51;flex-shrink:0}
+  .cover-board{margin-top:5px;background:#2d6a4f;color:#d8f3dc;font-size:14px;padding:7px 22px;border-radius:10px;text-align:center;line-height:1.5;font-weight:bold;box-shadow:0 3px 0 #1b4332;flex-shrink:0}
+  .cover-cols{margin-top:10px;flex:1;display:flex;flex-direction:column;gap:8px;overflow-y:auto;padding:4px 6px;min-height:0}
+  .cover-cols::-webkit-scrollbar{width:6px}
+  .cover-cols::-webkit-scrollbar-thumb{background:#74c69d;border-radius:3px}
+  .cover-row{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .cover-label{font-size:15px;font-weight:900;color:#1b4332;background:#fff;border:2px solid #95d5b2;border-radius:999px;padding:4px 12px;min-width:84px;text-align:center;flex-shrink:0;box-shadow:0 2px 0 #74c69d}
+  .cover-col{display:flex;gap:8px;flex-wrap:wrap}
+  .cover-card{width:108px;border-radius:10px;padding:7px 4px 6px;text-align:center;box-shadow:0 3px 0 rgba(0,0,0,.15);flex-shrink:0}
+  .cover-card .eq{font-size:19px;font-weight:900;color:#1b4332;line-height:1.2}
   .cover-card .eq .ans{color:#e76f51}
-  .cover-card .split{display:flex;align-items:center;justify-content:center;gap:1px;margin-top:2px;font-size:10px;font-weight:bold;color:#555}
+  .cover-card .split{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:5px;font-size:14px;font-weight:bold;color:#555}
   .cover-card .split .s1,.cover-card .split .s2{color:#c2410c}
   .cover-card .split .sten{color:#e76f51}
-  .cover-card .split .line{width:1px;height:10px;background:#999;margin:0 1px}
-  .cc-blue{background:#d6e8fa;border:2px solid #4a90d9;box-shadow:0 2px 0 #4a90d9}
-  .cc-yellow{background:#fdf6c9;border:2px solid #e8c547;box-shadow:0 2px 0 #e8c547}
-  .cc-pink{background:#f9d6d6;border:2px solid #e07a7a;box-shadow:0 2px 0 #e07a7a}
-  .cc-green{background:#d4efdf;border:2px solid #52b788;box-shadow:0 2px 0 #52b788}
-  .s-practice{padding:48px 60px 30px}
-  .p-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-shrink:0}
-  .p-title{font-size:22px;font-weight:900;color:#1b4332}
+  .cover-card .split .line{width:1px;height:14px;background:#999;margin:0 2px}
+  .cc-blue{background:#d6e8fa;border:2px solid #4a90d9;box-shadow:0 3px 0 #4a90d9}
+  .cc-yellow{background:#fdf6c9;border:2px solid #e8c547;box-shadow:0 3px 0 #e8c547}
+  .cc-pink{background:#f9d6d6;border:2px solid #e07a7a;box-shadow:0 3px 0 #e07a7a}
+  .cc-green{background:#d4efdf;border:2px solid #52b788;box-shadow:0 3px 0 #52b788}
+
+  /* 练习页（每页一题，大字） */
+  .s-practice{padding:22px 56px 70px}
+  .p-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-shrink:0}
+  .p-title{font-size:26px;font-weight:900;color:#1b4332}
   .p-title .pn{color:#e76f51}
-  .p-right{display:flex;align-items:center;gap:10px}
-  .p-tip{font-size:12px;color:#2d6a4f;background:#fff;padding:5px 12px;border-radius:999px;font-weight:bold}
-  .flip-all{font-size:13px;font-weight:bold;color:#1b4332;background:#ffe066;border:2px solid #1b4332;border-radius:999px;padding:5px 12px;cursor:pointer;font-family:inherit;transition:transform .2s}
-  .flip-all:hover{background:#ffd93d;transform:scale(1.08)}
-  .p-grid{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:14px;min-height:0}
-  .card{position:relative;perspective:1000px;cursor:pointer;width:100%;height:100%;transition:transform .3s,filter .3s;z-index:2}
-  .card:hover{transform:scale(1.04);filter:drop-shadow(0 8px 14px rgba(27,67,50,.3));z-index:6}
+  .p-right{display:flex;align-items:center;gap:12px}
+  .p-tip{font-size:16px;color:#2d6a4f;background:#fff;padding:6px 16px;border-radius:999px;font-weight:bold}
+  .flip-all{font-size:16px;font-weight:bold;color:#1b4332;background:#ffe066;border:2px solid #1b4332;border-radius:999px;padding:8px 18px;cursor:pointer;font-family:inherit;transition:transform .2s}
+  .flip-all:hover{background:#ffd93d;transform:scale(1.06)}
+  .p-grid{flex:1;display:grid;grid-template-columns:1fr;grid-template-rows:1fr;gap:0;min-height:0;place-items:center}
+
+  /* 大卡片 */
+  .card{position:relative;perspective:1200px;cursor:pointer;width:94%;height:96%;transition:transform .3s,filter .3s;z-index:2}
+  .card:hover{transform:scale(1.015);filter:drop-shadow(0 10px 18px rgba(27,67,50,.3));z-index:6}
   .card-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.35,.15,.2,1);animation:popIn .5s cubic-bezier(.2,.7,.2,1.2) backwards}
   .card.flipped .card-inner{transform:rotateY(180deg)}
-  .card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:10px 8px}
-  .card-front{background:#f6fdf4;border:3px solid #95d5b2;box-shadow:0 4px 0 #74c69d}
-  .card-back{background:#2d6a4f;border:3px solid #1b4332;box-shadow:0 4px 0 #1b4332;transform:rotateY(180deg)}
-  .eq-top{display:flex;align-items:center;gap:4px;font-size:26px;font-weight:900;color:#1b4332;line-height:1}
+  .card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:18px 16px}
+  .card-front{background:#f6fdf4;border:4px solid #95d5b2;box-shadow:0 6px 0 #74c69d}
+  .card-back{background:#2d6a4f;border:4px solid #1b4332;box-shadow:0 6px 0 #1b4332;transform:rotateY(180deg)}
+  .eq-top{display:flex;align-items:center;gap:10px;font-size:78px;font-weight:900;color:#1b4332;line-height:1;flex-shrink:0}
   .card-back .eq-top{color:#ffe066}
-  .op{font-size:22px;color:#52b788}
+  .op{font-size:56px;color:#52b788;font-weight:900}
   .card-back .op{color:#b7e4c7}
-  .divider{width:80%;height:2px;background:#95d5b2;margin:6px 0;border-radius:2px}
+  .divider{width:72%;height:3px;background:#95d5b2;margin:14px 0;border-radius:3px;flex-shrink:0}
   .card-back .divider{background:#52b788}
-  .steps{display:flex;flex-direction:column;gap:5px;align-items:center}
-  .step{display:flex;align-items:center;gap:3px;font-size:20px;font-weight:bold;color:#1b4332;line-height:1.2}
+  .steps{display:flex;flex-direction:column;gap:12px;align-items:center;flex-shrink:0}
+  .step{display:flex;align-items:center;gap:8px;font-size:44px;font-weight:bold;color:#1b4332;line-height:1.2}
   .card-back .step{color:#fff}
-  .s-num{font-size:20px;font-weight:900}
+  .s-num{font-size:44px;font-weight:900}
   .card-back .s-num{color:#fff}
-  .arrow{font-size:18px;color:#e76f51}
+  .arrow{font-size:36px;color:#e76f51}
   .card-back .arrow{color:#ffd93d}
-  .hl{background:#ffe066;padding:0 4px;border-radius:4px;color:#c2410c}
+  .hl{background:#ffe066;padding:2px 10px;border-radius:8px;color:#c2410c}
   .card-back .hl{background:#ffd93d;color:#9c5708}
-  .ans-show{color:#e76f51;font-size:28px}
-  .card-back .ans-show{color:#ffd93d;font-size:26px}
-  .flip-hint{margin-top:5px;font-size:11px;color:#74c69d;font-weight:bold}
-  .back-hint{margin-top:5px;font-size:11px;color:#b7e4c7;font-weight:bold}
-  .blank{width:30px;height:30px;border:2px solid #52b788;border-radius:6px;text-align:center;font-size:20px;font-weight:900;font-family:inherit;color:#1b4332;background:#fff;outline:none;transition:all .2s}
-  .blank:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px rgba(45,106,79,.15)}
+  .ans-show{color:#e76f51;font-size:76px}
+  .card-back .ans-show{color:#ffd93d}
+  .flip-hint{margin-top:14px;font-size:16px;color:#74c69d;font-weight:bold;flex-shrink:0}
+  .back-hint{margin-top:14px;font-size:16px;color:#b7e4c7;font-weight:bold;flex-shrink:0}
+
+  /* 大输入框 */
+  .blank{width:62px;height:62px;border:3px solid #52b788;border-radius:10px;text-align:center;font-size:46px;font-weight:900;font-family:inherit;color:#1b4332;background:#fff;outline:none;transition:all .2s}
+  .blank:focus{border-color:#2d6a4f;box-shadow:0 0 0 4px rgba(45,106,79,.15)}
   .blank.correct{background:#b7e4c7;border-color:#2d6a4f;color:#1b4332}
   .blank.wrong{background:#ffcdd2;border-color:#e53935;animation:shake .4s}
-  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
-  .card-front.completed{border-color:#f0a500;box-shadow:0 4px 0 #d99000,0 0 16px rgba(240,165,0,.3)}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .card-front.completed{border-color:#f0a500;box-shadow:0 6px 0 #d99000,0 0 22px rgba(240,165,0,.3)}
   .card-front.completed .flip-hint{color:#e76f51}
+
+  /* 翻页导航（每页一题） */
+  .page-nav{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;z-index:25}
+  .nav-btn{width:54px;height:54px;border-radius:50%;background:#2d6a4f;color:#fff;font-size:28px;font-weight:900;border:3px solid #1b4332;cursor:pointer;font-family:inherit;box-shadow:0 3px 0 #1b4332;transition:transform .15s;display:flex;align-items:center;justify-content:center}
+  .nav-btn:hover{transform:scale(1.12);background:#40916c}
+  .nav-btn:disabled{opacity:.35;cursor:default;transform:none}
+  .page-info{font-size:18px;font-weight:900;color:#1b4332;background:#fff;padding:6px 20px;border-radius:999px;border:2px solid #95d5b2;min-width:150px;text-align:center}
+
+  /* 结尾 */
   .s-close{align-items:center;justify-content:center;padding:50px 60px}
   .close-inner{text-align:center}
   .close-emoji{font-size:80px}
@@ -93,11 +111,11 @@
 <body>
 <div id="canvas">
   <div class="chrome-top"><span>🌿 平十法口诀 · 交互式学习</span><span>小学数学 · 20以内退位减法</span></div>
-  <div class="chrome-bottom"><span>✏️ 正面填空 → 翻面看答案 · 绿色=正确 红色=错误</span><span id="pageInfo">1 / 10</span></div>
-  <div class="nav-dots" id="navDots"></div>
+  <div class="chrome-bottom"><span>✏️ 正面填空 → 翻面看答案 · 绿色=正确 红色=错误</span><span id="pageInfo">1 / 4</span></div>
+
   <section class="slide s-cover active">
-    <div class="deco-emoji" style="top:18px;left:30px">🐯</div>
-    <div class="deco-emoji" style="top:18px;right:30px">🦁</div>
+    <div class="deco-emoji" style="top:14px;left:24px">🐯</div>
+    <div class="deco-emoji" style="top:14px;right:24px">🦁</div>
     <div class="cover-title">平十法口诀表</div>
     <div class="cover-ribbon">🐯 步步高升</div>
     <div class="cover-board">
@@ -105,6 +123,7 @@
     </div>
     <div class="cover-cols" id="coverCols"></div>
   </section>
+
   <section class="slide s-close" id="closingSlide">
     <div class="deco-emoji" style="top:40px;left:50px">🎈</div>
     <div class="deco-emoji" style="top:50px;right:50px;animation-delay:.5s">🌈</div>
@@ -120,8 +139,11 @@
     <div class="close-bottom">🌿 平十法口诀 · 交互式学习</div>
   </section>
 </div>
+
 <script>
+/* 平十法：按"差"分组 */
 const COLORS = ['cc-blue','cc-yellow','cc-pink','cc-green','cc-pink','cc-blue','cc-yellow','cc-green','cc-pink','cc-yellow','cc-blue','cc-green','cc-pink','cc-yellow','cc-blue'];
+
 const byDiff = {};
 const DATA = [];
 for(let m=11;m<=18;m++){
@@ -135,20 +157,24 @@ for(let m=11;m<=18;m++){
     DATA.push(d);
   }
 }
+
+/* 封面：按差分组，每组一行，大字不拥挤 */
 let coverHtml = '';
 for(let diff=2; diff<=16; diff++){
   const cards = byDiff[diff] || [];
-  let colHtml = '<div class="cover-col">';
+  let rowHtml = '<div class="cover-row"><div class="cover-label">差='+diff+'</div><div class="cover-col">';
   cards.forEach(d => {
-    colHtml += '<div class="cover-card '+COLORS[diff-2]+'">'+
+    rowHtml += '<div class="cover-card '+COLORS[diff-2]+'">'+
       '<div class="eq">'+d.m+'-'+d.s+'=<span class="ans">'+d.ans+'</span></div>'+
       '<div class="split"><span class="s1">'+d.p1+'</span><span class="line"></span><span class="sten">10</span><span class="line"></span><span class="s2">'+d.p2+'</span></div>'+
     '</div>';
   });
-  colHtml += '</div>';
-  coverHtml += colHtml;
+  rowHtml += '</div></div>';
+  coverHtml += rowHtml;
 }
 document.getElementById('coverCols').innerHTML = coverHtml;
+
+/* 大卡片HTML（每页一题） */
 function cardHTML(d, idx, delay){
   const front=
     '<div class="card-front">'+
@@ -187,6 +213,8 @@ function cardHTML(d, idx, delay){
     '</div>';
   return '<div class="card" data-idx="'+idx+'"><div class="card-inner" style="animation-delay:'+delay+'">'+front+back+'</div></div>';
 }
+
+/* 输入检查 */
 function checkInput(input){
   const expected=input.dataset.ans;
   const val=input.value.trim();
@@ -201,66 +229,85 @@ function checkInput(input){
   const allOk=Array.from(inputs).every(i=>i.classList.contains('correct'));
   front.classList.toggle('completed',allOk);
 }
+
+/* 生成练习页：每页一题 */
 const closing=document.getElementById('closingSlide');
-const PER=8;
-const PAGES=Math.ceil(DATA.length/PER);
+const PER=1;
+const PAGES=DATA.length;
 const TIPS=['📝 拆小数连续减','💡 先减到十再减','🎯 认真计算','🌟 你真棒！','💪 继续加油','✏️ 仔细检查','🏆 坚持到底','🌈 越来越好'];
 const DECO=['🐯','🦁','🐱','🐶','🐼','🐸','🦊','🐰'];
 for(let p=0;p<PAGES;p++){
-  const slice=DATA.slice(p*PER,p*PER+PER);
-  let cards='';
-  slice.forEach((d,i)=>{cards+=cardHTML(d,p*PER+i,(i*0.05).toFixed(2)+'s');});
+  const d=DATA[p];
   const sec=document.createElement('section');
   sec.className='slide s-practice';
   sec.innerHTML=
-    '<div class="deco-emoji" style="left:10px;top:180px">'+DECO[p%DECO.length]+'</div>'+
-    '<div class="deco-emoji" style="right:10px;bottom:150px;animation-delay:.8s">'+DECO[(p+4)%DECO.length]+'</div>'+
     '<div class="p-header">'+
-      '<div class="p-title">平十法练习 <span class="pn">第'+(p+1)+'组</span></div>'+
+      '<div class="p-title">平十法练习 <span class="pn">第'+(p+1)+'题</span></div>'+
       '<div class="p-right">'+
         '<div class="p-tip">'+TIPS[p%TIPS.length]+'</div>'+
-        '<button class="flip-all" onclick="toggleAll(this)">🔄 全部翻面</button>'+
+        '<button class="flip-all" onclick="toggleAll(this)">🔄 翻面看答案</button>'+
       '</div>'+
     '</div>'+
-    '<div class="p-grid">'+cards+'</div>';
+    '<div class="p-grid">'+cardHTML(d,p,(p*0.06).toFixed(2)+'s')+'</div>';
   closing.parentNode.insertBefore(sec,closing);
 }
+
+/* 翻面 */
 function toggleAll(btn){
   const slide=btn.closest('.slide');
   const cards=slide.querySelectorAll('.card');
   const anyUnflipped=Array.from(cards).some(c=>!c.classList.contains('flipped'));
   cards.forEach(c=>c.classList.toggle('flipped',anyUnflipped));
-  btn.textContent=anyUnflipped?'↩️ 全部翻回':'🔄 全部翻面';
+  btn.textContent=anyUnflipped?'↩️ 翻回正面':'🔄 翻面看答案';
 }
+
+/* 点击翻面（排除输入框） */
 const canvas=document.getElementById('canvas');
 canvas.addEventListener('click',function(e){
   if(e.target.tagName==='INPUT')return;
+  if(e.target.closest('.nav-btn'))return;
   const card=e.target.closest('.card');
   if(card)card.classList.toggle('flipped');
 });
+
+/* 导航 */
 const slides=document.querySelectorAll('.slide');
-const navDotsContainer=document.getElementById('navDots');
 const pageInfo=document.getElementById('pageInfo');
 let current=0;
 const total=slides.length;
-for(let i=0;i<total;i++){
-  const dot=document.createElement('div');
-  dot.className='nav-dot'+(i===0?' active':'');
-  dot.addEventListener('click',()=>goTo(i));
-  navDotsContainer.appendChild(dot);
-}
-const dots=document.querySelectorAll('.nav-dot');
+
+const pageNav=document.createElement('div');
+pageNav.className='page-nav';
+pageNav.innerHTML=
+  '<button class="nav-btn" id="prevBtn" aria-label="上一题">◀</button>'+
+  '<div class="page-info" id="pageNum">第 1 题 / '+PAGES+'</div>'+
+  '<button class="nav-btn" id="nextBtn" aria-label="下一题">▶</button>';
+canvas.appendChild(pageNav);
+const prevBtn=document.getElementById('prevBtn');
+const nextBtn=document.getElementById('nextBtn');
+const pageNum=document.getElementById('pageNum');
+
 function goTo(idx){
   if(idx<0||idx>=total||idx===current)return;
   slides[current].classList.remove('active');
-  dots[current].classList.remove('active');
   current=idx;
   slides[current].classList.add('active');
-  dots[current].classList.add('active');
   pageInfo.textContent=(current+1)+' / '+total;
+  if(current===0||current===total-1){
+    prevBtn.disabled=(current===0);
+    nextBtn.disabled=(current===total-1);
+    pageNum.textContent=(current===0)?'📖 口诀表':(current===total-1)?'🎉 完成！':'';
+  }else{
+    prevBtn.disabled=false;
+    nextBtn.disabled=false;
+    pageNum.textContent='第 '+(current)+' 题 / '+PAGES;
+  }
 }
 function next(){goTo(current+1);}
 function prev(){goTo(current-1);}
+prevBtn.addEventListener('click',prev);
+nextBtn.addEventListener('click',next);
+
 document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key===' '||e.key==='Enter'){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();prev();}
@@ -270,6 +317,7 @@ document.addEventListener('keydown',e=>{
 let wheelLock=false;
 canvas.addEventListener('wheel',e=>{
   e.preventDefault();
+  if(e.target.closest('.cover-cols'))return;
   if(wheelLock)return;
   wheelLock=true;
   setTimeout(()=>wheelLock=false,500);
@@ -287,6 +335,7 @@ function scale(){
 }
 window.addEventListener('resize',scale);
 scale();
+goTo(0);
 </script>
 </body>
 </html>
